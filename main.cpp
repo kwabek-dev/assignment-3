@@ -29,8 +29,10 @@ int main() {
 
         switch (choice) {
         case 1:
-            for (int i = 1; i <= 10; i++) q.push(i);
-            cout << "Pushed 10 integers into queue.\n";
+            // Prevent repeated appends: reset queue then push 1..10
+            q.clear();
+            for (int i = 1; i <= 10; ++i) q.push(i);
+            cout << "Queue reset and pushed integers 1..10.\n";
             break;
         case 2:
             cout << "Queue elements: ";
