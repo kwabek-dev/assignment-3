@@ -6,19 +6,17 @@
 
 // Sort the queue using insertion sort (template must be visible to TU)
 template<typename T>
-void insertion_sort_queue(Queue<T>& q) {
+void insertion_sort_queue(Queue<T>& q, bool descending = false) {
     std::vector<T> v;
-    while (!q.empty()) {
-        v.push_back(q.front());
-        q.pop();
-    }
+    while (!q.empty()) { v.push_back(q.front()); q.pop(); }
 
     for (std::size_t i = 1; i < v.size(); ++i) {
         T key = v[i];
         std::size_t j = i;
-        while (j > 0 && v[j - 1] > key) {
-            v[j] = v[j - 1];
-            --j;
+        if (!descending) {
+            while (j > 0 && v[j - 1] > key) { v[j] = v[j - 1]; --j; }
+        } else {
+            while (j > 0 && v[j - 1] < key) { v[j] = v[j - 1]; --j; }
         }
         v[j] = key;
     }

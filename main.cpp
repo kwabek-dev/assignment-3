@@ -1,15 +1,9 @@
 #include <iostream>
 #include <vector>
+#include <limits>
 #include "Queue.h"
 #include "SearchSort.h"
 using namespace std;
-
-// Forward declarations for functions defined in SearchSort.*
-// Adjust signatures if your SearchSort.h uses different names/signatures.
-template<typename T>
-void insertion_sort_queue(Queue<T>& q);
-
-int linear_search_last(const std::vector<int>& arr, int target, int index);
 
 int main() {
     Queue<int> q;
@@ -25,12 +19,16 @@ int main() {
         cout << "5. Sort Queue (Insertion Sort)\n";
         cout << "6. Exit\n";
         cout << "Enter choice: ";
-        cin >> choice;
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number.\n";
+            continue;
+        }
 
         switch (choice) {
         case 1:
-            // Prevent repeated appends: reset queue then push 1..10
-            q.clear();
+            q.clear();                         // avoid repeated appends
             for (int i = 1; i <= 10; ++i) q.push(i);
             cout << "Queue reset and pushed integers 1..10.\n";
             break;
@@ -58,10 +56,16 @@ int main() {
             break;
         }
         case 5:
-            cout << "Sorting queue...\n";
-            insertion_sort_queue(q);
-            cout << "Queue after sorting: ";
+            cout << "Queue before sorting: ";
             q.display();
+            cout << "Sorting a copy of the queue (original preserved)...\n";
+            {
+                // Sort a copy so option 1/2 original order remains unchanged
+                Queue<int> q_copy = q;
+                insertion_sort_queue(q_copy); // sorts the copy
+                cout << "Queue after sorting (sorted copy): ";
+                q_copy.display();
+            }
             break;
         case 6:
             cout << "Exiting...\n";
